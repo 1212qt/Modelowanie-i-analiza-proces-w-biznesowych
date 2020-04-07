@@ -4,45 +4,19 @@ from graph import MyGraph
 class Alpha:
     def __init__(self, log):
         self.log = log
-        self.tl = None
-        self.ti = None
-        self.to = None
         self.direct_succession = None
         self.start_events = None
         self.end_events = None
         self.parallel_events = None
 
-        self.get_direct_succession_set()
+        self.get_direct_succession()
         self.get_causality()
         self.get_inv_causality()
         self.get_start_events()
         self.get_end_events()
         self.get_parallel_events()
 
-
-    def get_tl_set(self):
-        self.tl = set()
-        if self.log is None:
-            return
-        for event_list in self.log:
-            for event in event_list:
-                self.tl.add(event)
-
-    def get_ti_set(self):
-        self.ti = set()
-        if self.log is None:
-            return
-        for event_list in self.log:
-            self.ti.add(event_list[0])
-
-    def get_to_set(self):
-        self.to = set()
-        if self.log is None:
-            return
-        for event_list in self.log:
-            self.to.add(event_list[-1])
-
-    def get_direct_succession_set(self):
+    def get_direct_succession(self):
         self.direct_succession = set()
         if self.log is None:
             return
@@ -88,7 +62,8 @@ class Alpha:
             if pair[::-1] in self.direct_succession:
                 self.parallel_events.add(pair)
 
-    def create_graph(self, filename = 'graph'):
+    # source: https://ai.ia.agh.edu.pl/pl:dydaktyka:dss:lab03
+    def create_graph(self, filename='graph'):
         G = MyGraph()
         causality = self.causality
         parallel_events = self.parallel_events
